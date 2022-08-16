@@ -4,27 +4,17 @@ import routes from "@/routes/routes";
 
 Vue.use(VueRouter)
 
-let originalPush = VueRouter.prototype.push
-let originalReplace = VueRouter.prototype.replace
+const originalPush = VueRouter.prototype.push
+const originalReplace = VueRouter.prototype.replace
 
-VueRouter.prototype.push = function (location, resolve, reject) {
-    if (resolve && reject) {
-        originalPush.call(this, location, resolve, reject)
-    } else {
-        originalPush.call(this, location, () => {
-        }, () => {
-        })
-    }
+VueRouter.prototype.push = function (location, onResolve, onReject) {
+    if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+    return originalPush.call(this, location).catch(err => err)
 }
 
-VueRouter.prototype.replace = function (location, resolve, reject) {
-    if (resolve && reject) {
-        originalReplace.call(this, location, resolve, reject)
-    } else {
-        originalReplace.call(this, location, () => {
-        }, () => {
-        })
-    }
+VueRouter.prototype.replace = function (location, onResolve, onReject) {
+    if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject)
+    return originalReplace.call(this, location).catch(err => err)
 }
 
 const router = new VueRouter({
