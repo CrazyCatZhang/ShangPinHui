@@ -14,11 +14,12 @@
             </nav>
             <div class="sort">
                 <div class="all-sort-list2">
-                    <div class="item" v-for="(c1) of category" :key="c1.categoryId">
-                        <h3>
+                    <div class="item" v-for="(c1,index) of category" :key="c1.categoryId"
+                         :class="{cur: currentIndex === index}">
+                        <h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">
                             <a href="">{{ c1.categoryName }}</a>
                         </h3>
-                        <div class="item-list clearfix">
+                        <div class="item-list clearfix" v-show="currentIndex === index">
                             <div class="subitem" v-for="(c2) of c1.categoryChild" :key="c2.categoryId">
                                 <dl class="fore">
                                     <dt>
@@ -44,11 +45,24 @@ import {mapState} from 'vuex'
 
 export default {
     name: 'TypeNav',
+    data() {
+        return {
+            currentIndex: -1
+        }
+    },
     mounted() {
         this.$store.dispatch('home/getCategory')
     },
     computed: {
         ...mapState('home', ['category'])
+    },
+    methods: {
+        changeIndex(index) {
+            this.currentIndex = index
+        },
+        leaveIndex() {
+            this.currentIndex = -1
+        }
     },
 }
 </script>
@@ -107,10 +121,13 @@ export default {
                         a {
                             color: #333;
                         }
+
+                        &.active {
+                            background: yellowgreen;
+                        }
                     }
 
                     .item-list {
-                        display: none;
                         position: absolute;
                         width: 734px;
                         min-height: 460px;
@@ -163,13 +180,33 @@ export default {
                         }
                     }
 
-                    &:hover {
-                        .item-list {
-                            display: block;
-                        }
+                    /*温馨提示:豪哥不想利用样式控制二级、三级分类显示与隐藏,下面的代码进行注释*/
+                    /* &:hover {
+                      .item-list {
+                        display: block;
+                      }
                     }
+                    */
+                }
+
+                .cur {
+                    background-color: skyblue;
                 }
             }
+        }
+
+        /*过渡动画:商品分类 进入阶段*/
+
+        .sort-enter {
+            height: 0px;
+        }
+
+        .sort-enter-active {
+            transition: all 0.3s;
+        }
+
+        .sort-enter-to {
+            height: 461px;
         }
     }
 }
