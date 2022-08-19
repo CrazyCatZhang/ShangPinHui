@@ -1,37 +1,39 @@
 <template>
     <div class="type-nav">
         <div class="container">
-            <div @mouseleave="leaveIndex" @click="goToSearch">
-                <h2 class="all">全部商品分类</h2>
-                <div class="sort">
-                    <div class="all-sort-list2">
-                        <div class="item" v-for="(c1,index) of category" :key="c1.categoryId"
-                             :class="{cur: currentIndex === index}">
-                            <h3 @mouseenter="changeIndex(index)">
-                                <a href="javascript:;" :data-categoryName="c1.categoryName"
-                                   :data-category1Id="c1.categoryId">{{
-                                        c1.categoryName
-                                    }}</a>
-                            </h3>
-                            <div class="item-list clearfix" v-show="currentIndex === index">
-                                <div class="subitem" v-for="(c2) of c1.categoryChild" :key="c2.categoryId">
-                                    <dl class="fore">
-                                        <dt>
-                                            <a href="javascript:;" :data-categoryName="c2.categoryName"
-                                               :data-category2Id="c2.categoryId">{{ c2.categoryName }}</a>
-                                        </dt>
-                                        <dd>
-                                            <em v-for="(c3) of c2.categoryChild" :key="c3.categoryId">
-                                                <a href="javascript:;" :data-categoryName="c3.categoryName"
-                                                   :data-category3Id="c3.categoryId">{{ c3.categoryName }}</a>
-                                            </em>
-                                        </dd>
-                                    </dl>
+            <div @mouseleave="leaveHandler" @click="goToSearch">
+                <h2 class="all" @mouseenter="changeShow">全部商品分类</h2>
+                <transition name="sort">
+                    <div class="sort" v-show="show">
+                        <div class="all-sort-list2">
+                            <div class="item" v-for="(c1,index) of category" :key="c1.categoryId"
+                                 :class="{cur: currentIndex === index}">
+                                <h3 @mouseenter="changeIndex(index)">
+                                    <a href="javascript:;" :data-categoryName="c1.categoryName"
+                                       :data-category1Id="c1.categoryId">{{
+                                            c1.categoryName
+                                        }}</a>
+                                </h3>
+                                <div class="item-list clearfix" v-show="currentIndex === index">
+                                    <div class="subitem" v-for="(c2) of c1.categoryChild" :key="c2.categoryId">
+                                        <dl class="fore">
+                                            <dt>
+                                                <a href="javascript:;" :data-categoryName="c2.categoryName"
+                                                   :data-category2Id="c2.categoryId">{{ c2.categoryName }}</a>
+                                            </dt>
+                                            <dd>
+                                                <em v-for="(c3) of c2.categoryChild" :key="c3.categoryId">
+                                                    <a href="javascript:;" :data-categoryName="c3.categoryName"
+                                                       :data-category3Id="c3.categoryId">{{ c3.categoryName }}</a>
+                                                </em>
+                                            </dd>
+                                        </dl>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </transition>
             </div>
             <nav class="nav">
                 <a href="###">服装城</a>
@@ -56,7 +58,8 @@ export default {
     name: 'TypeNav',
     data() {
         return {
-            currentIndex: -1
+            currentIndex: -1,
+            show: true
         }
     },
     mounted() {
@@ -69,8 +72,11 @@ export default {
         changeIndex: throttle(function (index) {
             this.currentIndex = index
         }, 50),
-        leaveIndex() {
+        leaveHandler() {
             this.currentIndex = -1
+            if (this.$route.path !== '/home') {
+                this.show = false
+            }
         },
         goToSearch(event) {
             let targetNode = event.target
@@ -90,6 +96,11 @@ export default {
                     locations.query.category3Id = category3id
                 }
                 this.$router.push(locations)
+            }
+        },
+        changeShow() {
+            if (this.$route.path !== '/home') {
+                this.show = true
             }
         }
     },
@@ -208,14 +219,6 @@ export default {
                             }
                         }
                     }
-
-                    /*温馨提示:豪哥不想利用样式控制二级、三级分类显示与隐藏,下面的代码进行注释*/
-                    /* &:hover {
-                      .item-list {
-                        display: block;
-                      }
-                    }
-                    */
                 }
 
                 .cur {
@@ -226,15 +229,16 @@ export default {
 
         /*过渡动画:商品分类 进入阶段*/
 
-        .sort-enter {
-            height: 0px;
+        .sort-enter, .sort-leave-to {
+            height: 0;
         }
 
-        .sort-enter-active {
+        .sort-enter-active, .sort-leave-active {
             transition: all 0.3s;
+            overflow: hidden;
         }
 
-        .sort-enter-to {
+        .sort-enter-to, .sort-leave {
             height: 461px;
         }
     }
