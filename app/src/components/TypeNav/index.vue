@@ -62,9 +62,6 @@ export default {
             show: true
         }
     },
-    mounted() {
-        this.$store.dispatch('home/getCategory')
-    },
     computed: {
         ...mapState('home', ['category'])
     },
