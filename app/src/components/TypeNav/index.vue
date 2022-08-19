@@ -1,7 +1,38 @@
 <template>
     <div class="type-nav">
         <div class="container">
-            <h2 class="all">全部商品分类</h2>
+            <div @mouseleave="leaveIndex" @click="goToSearch">
+                <h2 class="all">全部商品分类</h2>
+                <div class="sort">
+                    <div class="all-sort-list2">
+                        <div class="item" v-for="(c1,index) of category" :key="c1.categoryId"
+                             :class="{cur: currentIndex === index}">
+                            <h3 @mouseenter="changeIndex(index)">
+                                <a href="javascript:;" :data-categoryName="c1.categoryName"
+                                   :data-category1Id="c1.categoryId">{{
+                                        c1.categoryName
+                                    }}</a>
+                            </h3>
+                            <div class="item-list clearfix" v-show="currentIndex === index">
+                                <div class="subitem" v-for="(c2) of c1.categoryChild" :key="c2.categoryId">
+                                    <dl class="fore">
+                                        <dt>
+                                            <a href="javascript:;" :data-categoryName="c2.categoryName"
+                                               :data-category2Id="c2.categoryId">{{ c2.categoryName }}</a>
+                                        </dt>
+                                        <dd>
+                                            <em v-for="(c3) of c2.categoryChild" :key="c3.categoryId">
+                                                <a href="javascript:;" :data-categoryName="c3.categoryName"
+                                                   :data-category3Id="c3.categoryId">{{ c3.categoryName }}</a>
+                                            </em>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <nav class="nav">
                 <a href="###">服装城</a>
                 <a href="###">美妆馆</a>
@@ -12,30 +43,7 @@
                 <a href="###">有趣</a>
                 <a href="###">秒杀</a>
             </nav>
-            <div class="sort">
-                <div class="all-sort-list2">
-                    <div class="item" v-for="(c1,index) of category" :key="c1.categoryId"
-                         :class="{cur: currentIndex === index}">
-                        <h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">
-                            <a href="">{{ c1.categoryName }}</a>
-                        </h3>
-                        <div class="item-list clearfix" v-show="currentIndex === index">
-                            <div class="subitem" v-for="(c2) of c1.categoryChild" :key="c2.categoryId">
-                                <dl class="fore">
-                                    <dt>
-                                        <a href="">{{ c2.categoryName }}</a>
-                                    </dt>
-                                    <dd>
-                                        <em v-for="(c3) of c2.categoryChild" :key="c3.categoryId">
-                                            <a href="">{{ c3.categoryName }}</a>
-                                        </em>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </template>
@@ -53,7 +61,6 @@ export default {
     },
     mounted() {
         this.$store.dispatch('home/getCategory')
-        console.log(this.changeIndex)
     },
     computed: {
         ...mapState('home', ['category'])
@@ -64,6 +71,26 @@ export default {
         }, 50),
         leaveIndex() {
             this.currentIndex = -1
+        },
+        goToSearch(event) {
+            let targetNode = event.target
+            let {categoryname, category1id, category2id, category3id} = targetNode.dataset
+            if (categoryname) {
+                const locations = {
+                    name: 'search',
+                    query: {
+                        categoryName: categoryname
+                    }
+                }
+                if (category1id) {
+                    locations.query.category1Id = category1id
+                } else if (category2id) {
+                    locations.query.category2Id = category2id
+                } else {
+                    locations.query.category3Id = category3id
+                }
+                this.$router.push(locations)
+            }
         }
     },
 }
