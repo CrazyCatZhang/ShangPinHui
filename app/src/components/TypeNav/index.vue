@@ -92,6 +92,9 @@ export default {
                 } else {
                     locations.query.category3Id = category3id
                 }
+                if (this.$route.params) {
+                    locations.params = this.$route.params
+                }
                 this.$router.push(locations)
             }
         },
