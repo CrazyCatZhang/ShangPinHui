@@ -5,8 +5,8 @@ const state = {
 }
 
 const actions = {
-    getSearchList({commit}, data) {
-        const result = reqSearchList(data)
+    async getSearchList({commit}, data = {}) {
+        const result = await reqSearchList(data)
         if (result.code === 200) {
             commit('GETSEARCHLIST', result.data)
         }
