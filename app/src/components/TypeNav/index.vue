@@ -104,6 +104,11 @@ export default {
             }
         }
     },
+    mounted() {
+        if (this.$route.path !== "/home") {
+            this.show = false;
+        }
+    }
 }
 </script>
 
@@ -229,16 +234,16 @@ export default {
 
         /*过渡动画:商品分类 进入阶段*/
 
-        .sort-enter, .sort-leave-to {
+        .sort-enter {
             height: 0;
         }
 
-        .sort-enter-active, .sort-leave-active {
+        .sort-enter-active {
             transition: all 0.3s;
             overflow: hidden;
         }
 
-        .sort-enter-to, .sort-leave {
+        .sort-enter-to {
             height: 461px;
         }
     }

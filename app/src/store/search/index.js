@@ -1,8 +1,23 @@
-const state = {}
+import {reqSearchList} from "@/api";
 
-const actions = {}
+const state = {
+    searchList: {}
+}
 
-const mutations = {}
+const actions = {
+    getSearchList({commit}, data) {
+        const result = reqSearchList(data)
+        if (result.code === 200) {
+            commit('GETSEARCHLIST', result.data)
+        }
+    }
+}
+
+const mutations = {
+    GETSEARCHLIST(state, searchList) {
+        state.searchList = searchList
+    }
+}
 
 const getters = {}
 

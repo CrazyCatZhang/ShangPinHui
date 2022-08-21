@@ -8,3 +8,5 @@ export const reqBannerList = () => mockRequest({url: '/banner', method: 'get'});
 
 //获取Floor数据接口
 export const reqFloorList = () => mockRequest({url: '/floor', method: 'get'});
+
+export const reqSearchList = (data) => request({url: '/list', method: 'post', data})
