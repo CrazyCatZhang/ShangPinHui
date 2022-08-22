@@ -11,10 +11,9 @@
                         </li>
                     </ul>
                     <ul class="fl sui-tag">
-                        <li class="with-x">手机</li>
-                        <li class="with-x">iphone<i>×</i></li>
-                        <li class="with-x">华为<i>×</i></li>
-                        <li class="with-x">OPPO<i>×</i></li>
+                        <li class="with-x" v-show="searchParams.categoryName" @click="removeCategoryName">
+                            {{ searchParams.categoryName }}
+                        </li>
                     </ul>
                 </div>
 
@@ -141,8 +140,26 @@ export default {
     },
     mounted() {
         Object.assign(this.searchParams, this.$route.query, this.$route.params)
-        this.$store.dispatch('search/getSearchList', this.searchParams)
-    }
+        this.getData()
+    },
+    watch: {
+        $route() {
+            this.searchParams.category1Id = undefined
+            this.searchParams.category2Id = undefined
+            this.searchParams.category3Id = undefined
+            Object.assign(this.searchParams, this.$route.query, this.$route.params)
+            this.getData()
+        }
+    },
+    methods: {
+        getData() {
+            this.$store.dispatch('search/getSearchList', this.searchParams)
+        },
+        removeCategoryName() {
+
+
+        }
+    },
 }
 </script>
 

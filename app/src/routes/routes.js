@@ -11,7 +11,7 @@ export default [
     },
     {
         name: 'search',
-        path: '/search/:keyWords?',
+        path: '/search/:keyword?',
         component: Search,
         meta: {isShown: true}
     },
