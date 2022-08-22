@@ -34,23 +34,25 @@
                     <div class="sui-navbar">
                         <div class="navbar-inner filter">
                             <ul class="sui-nav">
-                                <li class="active">
-                                    <a href="#">综合</a>
+                                <li :class="{active: isIntegrate}" @click="sort('1')">
+                                    <a href="javascript:void(0)">
+                                        综合
+                                        <span
+                                            v-show="isIntegrate"
+                                            class="iconfont"
+                                            :class="{ 'icon-DOWN': isDesc, 'icon-UP': isAsc }"
+                                        ></span>
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">销量</a>
-                                </li>
-                                <li>
-                                    <a href="#">新品</a>
-                                </li>
-                                <li>
-                                    <a href="#">评价</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬆</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬇</a>
+                                <li :class="{active: isPrice}" @click="sort('2')">
+                                    <a href="javascript:;">
+                                        价格
+                                        <span
+                                            v-show="isPrice"
+                                            class="iconfont"
+                                            :class="{ 'icon-DOWN': isDesc, 'icon-UP': isAsc }"
+                                        ></span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -145,7 +147,19 @@ export default {
         SearchSelector
     },
     computed: {
-        ...mapState('search', ['searchList'])
+        ...mapState('search', ['searchList']),
+        isIntegrate() {
+            return this.searchParams.order.includes('1')
+        },
+        isPrice() {
+            return this.searchParams.order.includes('2')
+        },
+        isAsc() {
+            return this.searchParams.order.includes('asc')
+        },
+        isDesc() {
+            return this.searchParams.order.includes('desc')
+        }
     },
     mounted() {
         Object.assign(this.searchParams, this.$route.query, this.$route.params)
@@ -189,6 +203,18 @@ export default {
         },
         removeAttrValue(index) {
             this.searchParams.props.splice(index, 1)
+            this.getData()
+        },
+        sort(flag) {
+            const originalFlag = this.searchParams.order.split(':')[0]
+            const originalSortType = this.searchParams.order.split(':')[1]
+            let newOrder = ''
+            if (flag === originalFlag) {
+                newOrder = `${originalFlag}:${originalSortType === "desc" ? "asc" : "desc"}`
+            } else {
+                newOrder = `${flag}:desc`
+            }
+            this.searchParams.order = newOrder
             this.getData()
         }
     },
