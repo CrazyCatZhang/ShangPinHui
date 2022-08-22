@@ -11,14 +11,23 @@
                         </li>
                     </ul>
                     <ul class="fl sui-tag">
-                        <li class="with-x" v-show="searchParams.categoryName" @click="removeCategoryName">
-                            {{ searchParams.categoryName }}
+                        <li class="with-x" v-show="searchParams.categoryName">
+                            {{ searchParams.categoryName }}<i @click="removeCategoryName">×</i>
+                        </li>
+                        <li class="with-x" v-show="searchParams.keyword">
+                            {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+                        </li>
+                        <li class="with-x" v-show="searchParams.trademark">
+                            {{ searchParams.trademark.split(':')[1] }}<i @click="removeTradeMark">×</i>
+                        </li>
+                        <li class="with-x" v-for="(attrValue,index) of searchParams.props" :key="index">
+                            {{ attrValue.split(':')[1] }}<i @click="removeAttrValue(index)">×</i>
                         </li>
                     </ul>
                 </div>
 
                 <!--selector-->
-                <SearchSelector/>
+                <SearchSelector @getTradeMark="getTradeMark" @getAttrAndAttrValue="getAttrAndAttrValue"/>
 
                 <!--details-->
                 <div class="details clearfix">
@@ -156,8 +165,31 @@ export default {
             this.$store.dispatch('search/getSearchList', this.searchParams)
         },
         removeCategoryName() {
-
-
+            this.searchParams.categoryName = undefined
+            this.$router.push({name: 'search', params: this.$route.params})
+        },
+        removeKeyword() {
+            this.searchParams.keyword = undefined
+            this.$router.push({name: 'search', query: this.$route.query})
+        },
+        getTradeMark(id, name) {
+            this.searchParams.trademark = `${id}:${name}`
+            this.getData()
+        },
+        removeTradeMark() {
+            this.searchParams.trademark = ''
+            this.getData()
+        },
+        getAttrAndAttrValue(attr, attrValue) {
+            const newProps = `${attr.attrId}:${attrValue}:${attr.attrName}`
+            if (!this.searchParams.props.includes(newProps)) {
+                this.searchParams.props.push(newProps)
+                this.getData()
+            }
+        },
+        removeAttrValue(index) {
+            this.searchParams.props.splice(index, 1)
+            this.getData()
         }
     },
 }

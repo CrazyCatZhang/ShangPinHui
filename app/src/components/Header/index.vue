@@ -63,6 +63,7 @@ export default {
                 locations.query = this.$route.query
             }
             this.$router.push(locations)
+            this.keyword = ''
         }
     },
 };
