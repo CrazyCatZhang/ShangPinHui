@@ -18,7 +18,10 @@ VueRouter.prototype.replace = function (location, onResolve, onReject) {
 }
 
 const router = new VueRouter({
-    routes
+    routes,
+    scrollBehavior() {
+        return {y: 0}
+    }
 })
 
 export default router

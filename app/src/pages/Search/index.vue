@@ -62,7 +62,12 @@
                             <li class="yui3-u-1-5" v-for="good of searchList.goodsList" :key="good.id">
                                 <div class="list-wrap">
                                     <div class="p-img">
-                                        <a href="item.html" target="_blank"><img :src="good.defaultImg"/></a>
+                                        <router-link :to="{
+                                            name: 'detail',
+                                            params: {
+                                                skuId: good.id
+                                            }
+                                        }"><img :src="good.defaultImg"/></router-link>
                                     </div>
                                     <div class="price">
                                         <strong>
@@ -448,10 +453,10 @@ export default {
             }
 
             .page {
-                width: 733px;
+                width: 500px;
                 height: 66px;
                 overflow: hidden;
-                float: right;
+                margin: 0 auto;
 
                 .sui-pagination {
                     margin: 18px 0;
