@@ -1,21 +1,63 @@
 <template>
-    <div class="swiper-container">
+    <div class="swiper-container" ref="cur">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img src="../images/s1.png">
+            <div class="swiper-slide" v-for="(slide,index) of skuInfo.skuImageList" :key="index">
+                <img :src="slide.imgUrl" :class="{active: currentIndex === index}" @click="handle(index)">
             </div>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next" @click="add"></div>
+        <div class="swiper-button-prev" @click="minus"></div>
     </div>
 </template>
 
 <script>
-
-// import Swiper from 'swiper'
+import Swiper from 'swiper'
+import 'swiper/css/swiper.min.css'
+import {mapGetters} from "vuex";
 
 export default {
     name: "ImageList",
+    data() {
+        return {
+            currentIndex: 0
+        }
+    },
+    computed: {
+        ...mapGetters('detail', ['skuInfo'])
+    },
+    watch: {
+        skuInfo() {
+            this.$nextTick(() => {
+                const mySwiper = new Swiper(this.$refs.cur, {
+                    direction: "horizontal",
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                    },
+                    slidesPerView: 3,
+                })
+                console.log(mySwiper)
+            })
+        }
+    },
+    methods: {
+        handle(index) {
+            this.currentIndex = index
+            this.$bus.$emit('sendIndex', index)
+        },
+        minus() {
+            this.currentIndex--;
+            if (this.currentIndex <= 0) this.currentIndex = 0;
+            this.$bus.$emit("sendIndex", this.currentIndex);
+        },
+        add() {
+            this.currentIndex++;
+            if (this.currentIndex >= this.skuInfo.skuImageList.length - 1) {
+                this.currentIndex = this.skuInfo.skuImageList.length - 1;
+            }
+            this.$bus.$emit("sendIndex", this.currentIndex);
+        },
+    },
 }
 </script>
 
@@ -25,7 +67,6 @@ export default {
     width: 412px;
     box-sizing: border-box;
     padding: 0 12px;
-    position: relative;
 
     .swiper-slide {
         width: 56px;
@@ -48,13 +89,11 @@ export default {
     }
 
     .swiper-button-next {
-        position: absolute;
         left: auto;
         right: 0;
     }
 
     .swiper-button-prev {
-        position: absolute;
         left: 0;
         right: auto;
     }

@@ -19,7 +19,11 @@ const mutations = {
     }
 }
 
-const getters = {}
+const getters = {
+    skuInfo(state) {
+        return state.detailInfo.skuInfo || {}
+    }
+}
 
 export default {
     namespaced: true,

@@ -15,5 +15,8 @@ Vue.use(Pagination)
 new Vue({
     render: h => h(App),
     router,
-    store
+    store,
+    beforeCreate() {
+        Vue.prototype.$bus = this
+    }
 }).$mount('#app')
