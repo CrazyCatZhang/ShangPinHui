@@ -13,3 +13,8 @@ export const reqSearchList = (data) => request({url: '/list', method: 'post', da
 
 //详情模块商品的数据
 export const reqDetailList = (skuId) => request({url: `/item/${skuId}`, method: 'get'})
+
+export const reqAddOrUpdateCart = (skuId, skuNum) => request({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: 'post'
+})

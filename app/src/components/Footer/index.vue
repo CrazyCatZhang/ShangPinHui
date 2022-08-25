@@ -53,10 +53,10 @@
                             <li>尚品汇通信</li>
                         </ul>
                     </div>
-<!--                    <div class="footerItem">-->
-<!--                        <h4>帮助中心</h4>-->
-<!--                        <img src="./images/wx_cz.jpg"/>-->
-<!--                    </div>-->
+                    <!--                    <div class="footerItem">-->
+                    <!--                        <h4>帮助中心</h4>-->
+                    <!--                        <img src="./images/wx_cz.jpg"/>-->
+                    <!--                    </div>-->
                 </div>
                 <div class="copyright">
                     <ul class="helpLink">

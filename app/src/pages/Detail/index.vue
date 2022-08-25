@@ -79,7 +79,7 @@
                                 <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : 1">-</a>
                             </div>
                             <div class="add">
-                                <a href="javascript:">加入购物车</a>
+                                <a href="javascript:" @click="addOrUpdateCart">加入购物车</a>
                             </div>
                         </div>
                     </div>
@@ -362,6 +362,24 @@ export default {
             let value = e.target.value * 1
             if (isNaN(value) || value < 1) this.skuNum = 1
             else this.skuNum = parseInt(value)
+        },
+        async addOrUpdateCart() {
+            try {
+                await this.$store.dispatch('detail/addOrUpdateCart', {
+                    skuId: this.$route.params.skuId,
+                    skuNum: this.skuNum
+                })
+                sessionStorage.setItem('SKUINFO', JSON.stringify(this.detailInfo.skuInfo))
+                this.$router.push({
+                    path: '/addcartsuccess',
+                    query: {
+                        skuNum: this.skuNum
+                    }
+                })
+            } catch (err) {
+                console.log(err)
+            }
+
         }
     },
 }
