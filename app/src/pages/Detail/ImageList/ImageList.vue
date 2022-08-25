@@ -25,6 +25,7 @@ export default {
     width: 412px;
     box-sizing: border-box;
     padding: 0 12px;
+    position: relative;
 
     .swiper-slide {
         width: 56px;
@@ -43,20 +44,17 @@ export default {
                 border: 2px solid #f60;
                 padding: 1px;
             }
-
-            &:hover {
-                border: 2px solid #f60;
-                padding: 1px;
-            }
         }
     }
 
     .swiper-button-next {
+        position: absolute;
         left: auto;
         right: 0;
     }
 
     .swiper-button-prev {
+        position: absolute;
         left: 0;
         right: auto;
     }

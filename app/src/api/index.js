@@ -10,3 +10,6 @@ export const reqBannerList = () => mockRequest({url: '/banner', method: 'get'});
 export const reqFloorList = () => mockRequest({url: '/floor', method: 'get'});
 
 export const reqSearchList = (data) => request({url: '/list', method: 'post', data})
+
+//详情模块商品的数据
+export const reqDetailList = (skuId) => request({url: `/item/${skuId}`, method: 'get'})
