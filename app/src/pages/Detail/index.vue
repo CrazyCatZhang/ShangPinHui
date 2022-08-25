@@ -74,9 +74,9 @@
                         </div>
                         <div class="cartWrap">
                             <div class="controls">
-                                <input autocomplete="off" class="itxt">
-                                <a href="javascript:" class="plus">+</a>
-                                <a href="javascript:" class="mins">-</a>
+                                <input autocomplete="off" class="itxt" v-model="skuNum" @change="handle">
+                                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                                <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : 1">-</a>
                             </div>
                             <div class="add">
                                 <a href="javascript:">加入购物车</a>
@@ -336,7 +336,11 @@ import {mapState} from "vuex";
 
 export default {
     name: 'Detail',
-
+    data() {
+        return {
+            skuNum: 1
+        }
+    },
     components: {
         ImageList,
         Zoom
@@ -353,6 +357,11 @@ export default {
                 item.isChecked = "0"
             })
             saleAttrValue.isChecked = "1"
+        },
+        handle(e) {
+            let value = e.target.value * 1
+            if (isNaN(value) || value < 1) this.skuNum = 1
+            else this.skuNum = parseInt(value)
         }
     },
 }
