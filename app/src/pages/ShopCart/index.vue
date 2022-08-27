@@ -67,7 +67,7 @@
                 <span>全选</span>
             </div>
             <div class="option">
-                <a>删除选中的商品</a>
+                <a href="javascript:void(0)" @click="deleteCheckedGoods">删除选中的商品</a>
                 <a href="#none">移到我的关注</a>
                 <a href="#none">清除下柜商品</a>
             </div>
@@ -173,6 +173,14 @@ export default {
             const isChecked = event.target.checked ? 1 : 0
             try {
                 await this.$store.dispatch("shopcart/changeAllChecked", isChecked);
+                this.getData();
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async deleteCheckedGoods() {
+            try {
+                await this.$store.dispatch('shopcart/deleteCheckedGoods');
                 this.getData();
             } catch (e) {
                 console.log(e)

@@ -29,10 +29,18 @@ const actions = {
             return Promise.reject()
         }
     },
-    async changeAllChecked({state, dispatch}, isChecked) {
+    changeAllChecked({state, dispatch}, isChecked) {
         const result = []
         state.shopCartInfo[0].cartInfoList.forEach(cartInfo => {
             const promise = dispatch('changeChecked', {skuId: cartInfo.skuId, isChecked})
+            result.push(promise)
+        })
+        return Promise.all(result)
+    },
+    deleteCheckedGoods({state, dispatch}) {
+        const result = []
+        state.shopCartInfo[0].cartInfoList.forEach(cartInfo => {
+            const promise = dispatch('deleteShopCart', cartInfo.skuId)
             result.push(promise)
         })
         return Promise.all(result)
