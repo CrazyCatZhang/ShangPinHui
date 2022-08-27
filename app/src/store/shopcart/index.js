@@ -1,5 +1,5 @@
 import {SET_USERID} from "@/utils/USER_ID";
-import {reqDeleteCart, reqShopCart} from "@/api";
+import {reqDeleteCart, reqShopCart, reqUpdateChecked} from "@/api";
 
 const state = {
     shopCartInfo: [],
@@ -20,6 +20,22 @@ const actions = {
         } else {
             return Promise.reject()
         }
+    },
+    async changeChecked(_, {skuId, isChecked}) {
+        const result = await reqUpdateChecked(skuId, isChecked)
+        if (result.code === 200) {
+            return 'ok'
+        } else {
+            return Promise.reject()
+        }
+    },
+    async changeAllChecked({state, dispatch}, isChecked) {
+        const result = []
+        state.shopCartInfo[0].cartInfoList.forEach(cartInfo => {
+            const promise = dispatch('changeChecked', {skuId: cartInfo.skuId, isChecked})
+            result.push(promise)
+        })
+        return Promise.all(result)
     }
 }
 

@@ -20,6 +20,8 @@
                         <input
                             type="checkbox"
                             name="chk_list"
+                            :checked="cart.isChecked"
+                            @change="changeChecked(cart,$event)"
                         />
                     </li>
                     <li class="cart-list-con2">
@@ -59,6 +61,8 @@
                 <input
                     class="chooseAll"
                     type="checkbox"
+                    @change="changeAllChecked($event)"
+                    :checked="isAllChecked && cartInfoList.length > 0"
                 />
                 <span>全选</span>
             </div>
@@ -101,6 +105,9 @@ export default {
         },
         totalPrice() {
             return this.cartInfoList.reduce((a, b) => a + b.skuPrice * b.skuNum, 0)
+        },
+        isAllChecked() {
+            return this.cartInfoList.filter(item => item.isChecked === 1).length === this.cartInfoList.length
         }
     },
     methods: {
@@ -152,7 +159,25 @@ export default {
             } catch (e) {
                 console.log(e)
             }
-        }, 500)
+        }, 500),
+        async changeChecked(cart, event) {
+            const params = {skuId: cart.skuId, isChecked: event.target.checked ? 1 : 0}
+            try {
+                await this.$store.dispatch("shopcart/changeChecked", params);
+                this.getData();
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async changeAllChecked(event) {
+            const isChecked = event.target.checked ? 1 : 0
+            try {
+                await this.$store.dispatch("shopcart/changeAllChecked", isChecked);
+                this.getData();
+            } catch (e) {
+                console.log(e)
+            }
+        }
     },
 };
 </script>
