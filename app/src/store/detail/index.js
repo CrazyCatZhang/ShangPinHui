@@ -13,7 +13,6 @@ const actions = {
     },
     async addOrUpdateCart(_, {skuId, skuNum}) {
         const result = await reqAddOrUpdateCart(skuId, skuNum)
-        console.log(result)
         if (result.code === 200) {
             return 'ok'
         } else {

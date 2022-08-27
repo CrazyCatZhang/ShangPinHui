@@ -32,15 +32,16 @@
                         <span class="price">{{ cart.skuPrice }}.00</span>
                     </li>
                     <li class="cart-list-con5">
-                        <a class="mins">-</a>
+                        <a class="mins" @click="minusGoodsNum(cart)">-</a>
                         <input
                             autocomplete="off"
                             type="text"
                             :value="cart.skuNum"
                             minnum="1"
                             class="itxt"
+                            @input="changeGoodsNum(cart,$event)"
                         />
-                        <a class="plus">+</a>
+                        <a class="plus" @click="addGoodsNum(cart.skuId)">+</a>
                     </li>
                     <li class="cart-list-con6">
                         <span class="sum">{{ cart.skuNum * cart.skuPrice }}</span>
@@ -85,6 +86,8 @@
 
 <script>
 import {mapGetters} from "vuex";
+import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 export default {
     name: "ShopCart",
@@ -111,7 +114,45 @@ export default {
             } catch (e) {
                 console.log(e)
             }
-        }
+        },
+        async addGoodsNum(skuId) {
+            const params = {
+                skuId,
+                skuNum: 1
+            }
+            try {
+                await this.$store.dispatch('detail/addOrUpdateCart', params)
+                this.getData()
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        minusGoodsNum: throttle(async function (cart) {
+            if (cart.skuNum > 1) {
+                const params = {skuId: cart.skuId, skuNum: -1};
+                try {
+                    await this.$store.dispatch("detail/addOrUpdateCart", params);
+                    this.getData();
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+        }, 1000),
+        changeGoodsNum: debounce(async function (cart, event) {
+            const params = {skuId: cart.skuId}
+            let value = event.target.value * 1
+            if (isNaN(value) || value < 1) {
+                params.skuNum = 0
+            } else {
+                params.skuNum = parseInt(value) - cart.skuNum
+            }
+            try {
+                await this.$store.dispatch("detail/addOrUpdateCart", params);
+                this.getData();
+            } catch (e) {
+                console.log(e)
+            }
+        }, 500)
     },
 };
 </script>
