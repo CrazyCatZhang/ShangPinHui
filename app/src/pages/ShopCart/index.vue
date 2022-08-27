@@ -46,7 +46,7 @@
                         <span class="sum">{{ cart.skuNum * cart.skuPrice }}</span>
                     </li>
                     <li class="cart-list-con7">
-                        <a class="sindelet">删除</a>
+                        <a href="javascript:void(0)" class="sindelet" @click="deleteCart(cart.skuId)">删除</a>
                         <br/>
                         <a href="#none">移到收藏</a>
                     </li>
@@ -58,13 +58,11 @@
                 <input
                     class="chooseAll"
                     type="checkbox"
-                    @change="updateAllChecked($event)"
-                    :checked="isCartChecked && cartInfoList.length>0"
                 />
                 <span>全选</span>
             </div>
             <div class="option">
-                <a @click="deleteAllCart">删除选中的商品</a>
+                <a>删除选中的商品</a>
                 <a href="#none">移到我的关注</a>
                 <a href="#none">清除下柜商品</a>
             </div>
@@ -96,13 +94,24 @@ export default {
     computed: {
         ...mapGetters('shopcart', ["CartInfo"]),
         cartInfoList() {
-            return this.CartInfo.cartInfoList || [];
+            return this.CartInfo.cartInfoList || []
         },
+        totalPrice() {
+            return this.cartInfoList.reduce((a, b) => a + b.skuPrice * b.skuNum, 0)
+        }
     },
     methods: {
         getData() {
-            this.$store.dispatch("shopcart/getShopCart");
+            this.$store.dispatch("shopcart/getShopCart")
         },
+        async deleteCart(id) {
+            try {
+                await this.$store.dispatch('shopcart/deleteShopCart', id)
+                this.getData()
+            } catch (e) {
+                console.log(e)
+            }
+        }
     },
 };
 </script>

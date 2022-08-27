@@ -1,5 +1,5 @@
 import {SET_USERID} from "@/utils/USER_ID";
-import {reqShopCart} from "@/api";
+import {reqDeleteCart, reqShopCart} from "@/api";
 
 const state = {
     shopCartInfo: [],
@@ -11,6 +11,14 @@ const actions = {
         const result = await reqShopCart()
         if (result.code === 200) {
             commit('GETSHOPCART', result.data)
+        }
+    },
+    async deleteShopCart(_, skuId) {
+        const result = await reqDeleteCart(skuId)
+        if (result.code === 200) {
+            return 'ok'
+        } else {
+            return Promise.reject()
         }
     }
 }
