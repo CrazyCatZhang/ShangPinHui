@@ -83,6 +83,7 @@ export default {
                 if (phone && code && password === password1) {
                     await this.$store.dispatch('user/userRegister', {phone, code, password})
                     await this.$router.push('/login')
+                    console.log(11111)
                 }
             } catch (e) {
                 console.log(e)

@@ -33,3 +33,7 @@ export const reqGetCode = (phone) => request({url: `/user/passport/sendCode/${ph
 export const reqRegister = (data) => request({url: `/user/passport/register`, method: 'post', data})
 
 export const reqUserLogin = (data) => request({url: `/user/passport/login`, method: 'post', data})
+
+export const reqUserInfo = () => request({url: `/user/passport/auth/getUserInfo`, method: 'get'})
+
+export const reqUserLogout = () => request({url: `/user/passport/logout`, method: 'get'})

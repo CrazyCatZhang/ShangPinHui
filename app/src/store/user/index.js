@@ -1,8 +1,9 @@
-import {reqGetCode, reqRegister, reqUserLogin} from "@/api";
+import {reqGetCode, reqRegister, reqUserInfo, reqUserLogin, reqUserLogout} from "@/api";
 
 const state = {
     code: '',
-    token: ''
+    token: localStorage.getItem('TOKEN'),
+    nickName: ''
 }
 
 const actions = {
@@ -28,6 +29,25 @@ const actions = {
         console.log(result)
         if (result.code === 200) {
             commit('GETTOKEN', result.data.token)
+            localStorage.setItem('TOKEN', result.data.token)
+            return 'ok'
+        } else {
+            return Promise.reject()
+        }
+    },
+    async getUserInfo({commit}) {
+        const result = await reqUserInfo()
+        if (result.code === 200) {
+            commit('GETUSERINFO', result.data.nickName)
+            return 'ok'
+        } else {
+            return Promise.reject()
+        }
+    },
+    async userLogout({commit}) {
+        const result = await reqUserLogout()
+        if (result.code === 200) {
+            commit('CLEAR')
             return 'ok'
         } else {
             return Promise.reject()
@@ -41,6 +61,14 @@ const mutations = {
     },
     GETTOKEN(state, token) {
         state.token = token
+    },
+    GETUSERINFO(state, nickName) {
+        state.nickName = nickName
+    },
+    CLEAR(state) {
+        state.token = ''
+        state.nickName = ''
+        localStorage.removeItem('TOKEN')
     }
 }
 

@@ -13,6 +13,9 @@ request.interceptors.request.use((config) => {
     if (store.state.shopcart.USER_ID) {
         config.headers.userTempId = store.state.shopcart.USER_ID;
     }
+    if (store.state.user.token) {
+        config.headers.token = store.state.user.token;
+    }
     return config
 })
 
