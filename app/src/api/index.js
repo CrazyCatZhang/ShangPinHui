@@ -28,3 +28,7 @@ export const reqUpdateChecked = (skuId, isChecked) => request({
     method: 'get'
 })
 
+export const reqGetCode = (phone) => request({url: `/user/passport/sendCode/${phone}`, method: 'get'})
+
+export const reqRegister = (data) => request({url: `/user/passport/register`, method: 'post', data})
+
