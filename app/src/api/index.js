@@ -37,3 +37,19 @@ export const reqUserLogin = (data) => request({url: `/user/passport/login`, meth
 export const reqUserInfo = () => request({url: `/user/passport/auth/getUserInfo`, method: 'get'})
 
 export const reqUserLogout = () => request({url: `/user/passport/logout`, method: 'get'})
+
+export const reqAddressInfo = () => request({url: `/user/userAddress/auth/findUserAddressList`, method: 'get'});
+
+export const reqShopInfo = () => request({url: `/order/auth/trade`, method: 'get'})
+
+export const reqSubmitOrder = (tradeNo, data) => request({
+    url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method: 'post',
+    data
+})
+
+export const reqPayInfo = (orderId) => request({url: `/payment/weixin/createNative/${orderId}`, method: 'get'})
+
+export const reqPayResult = (orderId) => request({url: `/payment/weixin/queryPayStatus/${orderId}`, method: 'get'})
+
+export const reqMyOrderList = (page, limit) => request({url: `/order/auth/${page}/${limit}`, method: 'get'})

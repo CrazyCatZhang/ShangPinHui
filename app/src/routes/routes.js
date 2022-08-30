@@ -5,6 +5,7 @@ import Detail from "@/pages/Detail";
 import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Register from "@/pages/Register";
+import Trade from "@/pages/Trade";
 
 export default [
     {
@@ -41,11 +42,16 @@ export default [
     {
         path: '/addcartsuccess',
         component: AddCartSuccess,
-        meta: {show: true},
+        meta: {isShow: true},
     },
     {
         path: '/shopcart',
         component: ShopCart,
-        meta: { show: true }
+        meta: {isShow: true}
+    },
+    {
+        path: '/trade',
+        component: Trade,
+        meta: {isShow: true}
     },
 ]

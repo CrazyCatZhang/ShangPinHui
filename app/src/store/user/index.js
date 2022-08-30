@@ -1,9 +1,10 @@
-import {reqGetCode, reqRegister, reqUserInfo, reqUserLogin, reqUserLogout} from "@/api";
+import {reqAddressInfo, reqGetCode, reqRegister, reqUserInfo, reqUserLogin, reqUserLogout} from "@/api";
 
 const state = {
     code: '',
     token: localStorage.getItem('TOKEN'),
-    nickName: ''
+    nickName: '',
+    address: []
 }
 
 const actions = {
@@ -52,6 +53,16 @@ const actions = {
         } else {
             return Promise.reject()
         }
+    },
+    async getUserAddress({commit}) {
+        const result = await reqAddressInfo()
+        result.data[0].isDefault = '1'
+        if (result.code === 200) {
+            commit('GETADDRESS', result.data)
+            return 'ok'
+        } else {
+            return Promise.reject()
+        }
     }
 }
 
@@ -69,6 +80,9 @@ const mutations = {
         state.token = ''
         state.nickName = ''
         localStorage.removeItem('TOKEN')
+    },
+    GETADDRESS(state, address) {
+        state.address = address.splice(0, 5)
     }
 }
 
