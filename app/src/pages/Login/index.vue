@@ -81,7 +81,8 @@ export default {
                     phone: this.phone,
                     password: this.password
                 })
-                await this.$router.push('/home')
+                const toPath = this.$route.query.redirect || "/home";
+                await this.$router.push(toPath)
             } catch (e) {
                 console.log(e)
             }
