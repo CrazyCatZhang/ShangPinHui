@@ -5,6 +5,7 @@ import TypeNav from "@/components/TypeNav";
 import store from "@/store";
 import '@/mock/mockServer'
 import VueLazyload from "vue-lazyload";
+import '@/plugins/validate'
 import loadingGif from '@/assets/da22080ce9322b29cec5eacd94469d70.gif'
 import {Button, Carousel, carouselItem, Message, MessageBox, Pagination} from "element-ui";
 
