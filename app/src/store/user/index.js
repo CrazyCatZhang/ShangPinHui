@@ -1,10 +1,10 @@
-import {reqAddressInfo, reqGetCode, reqRegister, reqUserInfo, reqUserLogin, reqUserLogout} from "@/api";
+import {reqAddressInfo, reqGetCode, reqMyOrderList, reqRegister, reqUserInfo, reqUserLogin, reqUserLogout} from "@/api";
 
 const state = {
     code: '',
     token: localStorage.getItem('TOKEN'),
     nickName: '',
-    address: []
+    address: [],
 }
 
 const actions = {
@@ -27,7 +27,6 @@ const actions = {
     },
     async userLogin({commit}, data) {
         const result = await reqUserLogin(data)
-        console.log(result)
         if (result.code === 200) {
             commit('GETTOKEN', result.data.token)
             localStorage.setItem('TOKEN', result.data.token)
@@ -63,6 +62,14 @@ const actions = {
         } else {
             return Promise.reject()
         }
+    },
+    async getUserOrderList(_, {page, limit}) {
+        const result = await reqMyOrderList(page, limit)
+        if (result.code === 200) {
+            return result.data
+        } else {
+            return Promise.reject()
+        }
     }
 }
 
@@ -83,7 +90,10 @@ const mutations = {
     },
     GETADDRESS(state, address) {
         state.address = address.splice(0, 5)
-    }
+    },
+    // GETORDERLIST(state, orderList) {
+    //     state.orderList = orderList
+    // }
 }
 
 const getters = {}

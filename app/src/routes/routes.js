@@ -7,6 +7,10 @@ import ShopCart from "@/pages/ShopCart";
 import Register from "@/pages/Register";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
+import PaySuccess from "@/pages/PaySuccess";
+import Center from "@/pages/Center";
+import MyOrder from "@/pages/Center/myOrder";
+import TeamOrder from "@/pages/Center/teamOrder";
 
 export default [
     {
@@ -59,5 +63,29 @@ export default [
         path: '/pay',
         component: Pay,
         meta: {isShow: true}
+    },
+    {
+        path: '/paysuccess',
+        component: PaySuccess,
+        meta: {isShow: true}
+    },
+    {
+        path: '/center',
+        component: Center,
+        meta: {isShow: true},
+        children: [
+            {
+                path: 'myorder',
+                component: MyOrder
+            },
+            {
+                path: 'teamorder',
+                component: TeamOrder
+            },
+            {
+                path: '/center',
+                redirect: '/center/myorder'
+            }
+        ]
     },
 ]
