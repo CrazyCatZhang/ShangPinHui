@@ -1,37 +1,23 @@
-import Home from "@/pages/Home";
-import Search from "@/pages/Search";
-import Login from "@/pages/Login";
-import Detail from "@/pages/Detail";
-import AddCartSuccess from "@/pages/AddCartSuccess";
-import ShopCart from "@/pages/ShopCart";
-import Register from "@/pages/Register";
-import Trade from "@/pages/Trade";
-import Pay from "@/pages/Pay";
-import PaySuccess from "@/pages/PaySuccess";
-import Center from "@/pages/Center";
-import MyOrder from "@/pages/Center/myOrder";
-import TeamOrder from "@/pages/Center/teamOrder";
-
 export default [
     {
         path: '/home',
-        component: Home,
+        component: () => import('@/pages/Home'),
         meta: {isShow: true}
     },
     {
         name: 'search',
         path: '/search/:keyword?',
-        component: Search,
+        component: () => import('@/pages/Search'),
         meta: {isShow: true}
     },
     {
         path: '/login',
-        component: Login,
+        component: () => import('@/pages/Login'),
         meta: {isShow: false}
     },
     {
         path: '/register',
-        component: Register,
+        component: () => import('@/pages/Register'),
         meta: {isShow: false}
     },
     {
@@ -40,23 +26,33 @@ export default [
     },
     {
         path: '/detail/:skuId?',
-        component: Detail,
+        component: () => import('@/pages/Detail'),
         name: 'detail',
         meta: {isShow: true},
     },
     {
         path: '/addcartsuccess',
-        component: AddCartSuccess,
+        component: () => import('@/pages/AddCartSuccess'),
         meta: {isShow: true},
+        beforeEnter(to, from, next) {
+            const skuNum = to.query.skuNum
+            const skuInfo = JSON.parse(window.sessionStorage.getItem('SKUINFO'))
+            console.log('---', skuNum, skuInfo)
+            if (skuNum && skuInfo) {
+                next()
+            } else {
+                next('/')
+            }
+        }
     },
     {
         path: '/shopcart',
-        component: ShopCart,
+        component: () => import('@/pages/ShopCart'),
         meta: {isShow: true}
     },
     {
         path: '/trade',
-        component: Trade,
+        component: () => import('@/pages/Trade'),
         meta: {isShow: true},
         beforeEnter: (_, from, next) => {
             if (from.path === '/shopcart') {
@@ -68,7 +64,7 @@ export default [
     },
     {
         path: '/pay',
-        component: Pay,
+        component: () => import('@/pages/Pay'),
         meta: {isShow: true},
         beforeEnter: (_, from, next) => {
             if (from.path === '/trade') {
@@ -80,7 +76,7 @@ export default [
     },
     {
         path: '/paysuccess',
-        component: PaySuccess,
+        component: () => import('@/pages/PaySuccess'),
         meta: {isShow: true},
         beforeEnter: (_, from, next) => {
             if (from.path === '/pay') {
@@ -92,16 +88,16 @@ export default [
     },
     {
         path: '/center',
-        component: Center,
+        component: () => import('@/pages/Center'),
         meta: {isShow: true},
         children: [
             {
                 path: 'myorder',
-                component: MyOrder
+                component: () => import('@/pages/Center/myOrder')
             },
             {
                 path: 'teamorder',
-                component: TeamOrder
+                component: () => import('@/pages/Center/teamOrder')
             },
             {
                 path: '/center',
