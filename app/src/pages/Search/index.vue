@@ -67,7 +67,7 @@
                                             params: {
                                                 skuId: good.id
                                             }
-                                        }"><img :src="good.defaultImg"/></router-link>
+                                        }"><img v-lazy="good.defaultImg"/></router-link>
                                     </div>
                                     <div class="price">
                                         <strong>
